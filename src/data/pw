@@ -1,0 +1,4 @@
+user_db = {
+    "admin": "password",
+    "username2": "password2",
+}
