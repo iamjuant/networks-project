@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS4390/5390 Project</title>
+</head>
+<body>
+
+<h1>Identity Access Management</h1>
+
+<button onclick="connectToDatabase()">Connect to Database</button>
+<p id="connectionResult"></p>
+
+<button onclick="viewTable()">View Table</button>
+<p id="tableResult"></p>
+
+<script>
+    function connectToDatabase() {
+        fetch('/connect')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('connectionResult').innerText = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function viewTable() {
+        fetch('/view_table')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('tableResult').innerHTML = data.replace(/\n/g, '<br>');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+</body>
+</html>
