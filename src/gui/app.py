@@ -17,12 +17,23 @@ def connect_to_database():
     except sqlite3.Error as error:
         return f'ERROR: Failed to connect to DB: {error}'
 
-@app.route('/view_table')
+@app.route('/view_credentials')
 def view_table():
     try:
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM credentials;")
+        rows = cursor.fetchall()
+        return '<br>'.join(map(str, rows))
+    except sqlite3.Error as error:
+        return f'Failed to view table: {error}'
+
+@app.route('/view_whitelist')
+def view_whitelist():
+    try:
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM whitelist;")
         rows = cursor.fetchall()
         return '<br>'.join(map(str, rows))
     except sqlite3.Error as error:

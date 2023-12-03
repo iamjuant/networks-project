@@ -13,5 +13,16 @@ cursor.execute('''
     )
 ''')
 
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS whitelist (
+        id INTEGER PRIMARY KEY,
+        ip TEXT NOT NULL,
+        ports TEXT NOT NULL,
+        active TEXT NOT NULL
+    )
+''')
+
+
 conn.commit()
 conn.close()
+

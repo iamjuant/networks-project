@@ -30,7 +30,7 @@
     }
 
     function viewTable() {
-        fetch('/view_table')
+        fetch('/view_credentials')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('tableResult').innerHTML = data.replace(/\n/g, '<br>');
