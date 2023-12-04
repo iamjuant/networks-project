@@ -7,7 +7,7 @@ class Shell(Cmd):
 
     # Instead of using input(), this will use stdout.write() and stdin.readline(),
     # this means we can use any TextIO instead of just sys.stdin and sys.stdout.
-    use_rawinput=True
+    use_rawinput=False
 
     # The prompt property can be overridden, allowing us to use a custom 
     # string to be displayed at the beginning of each line. This will not

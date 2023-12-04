@@ -1,5 +1,6 @@
 import paramiko
-
+import sqlite3
+import bcrypt
 class SshServerInterface(paramiko.ServerInterface):
 
     # This will allow the SSH server to provide a
@@ -24,7 +25,15 @@ class SshServerInterface(paramiko.ServerInterface):
     # This let's us setup password authentication.
     #Here we can add the logic for the passwords I am thinking on having a small database to accomplish this
     def check_auth_password(self, username, password):
-        if (username == 'admin2') and (password == 'password'):
+        conn = sqlite3.connect("UserCredentials.db")
+        cursor = conn.cursor()
+        cursor.execute(
+          'select * from credentials where username = ? and password = ?',(username,password))
+        conn.commit()
+        rows = cursor.fetchall()
+        conn.close()
+        print(rows)
+        if (rows):
             return paramiko.AUTH_SUCCESSFUL
         return paramiko.AUTH_FAILED
 

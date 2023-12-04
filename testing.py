@@ -12,8 +12,8 @@ class ssh:
         print("Connecting to server on ip", str(address))
         self.client = paramiko.client.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
-        self.client.connect(address, username=username, password=password, look_for_keys=False)
-        self.transport = paramiko.Transport((address, 22))
+        self.client.connect(address, username=username, password=password, look_for_keys=True)
+        self.transport = paramiko.Transport(address, 22)
         print("Here")
 
         self.transport.connect(username=username, password=password)
@@ -61,7 +61,7 @@ class ssh:
         return last_line
 
 
-sshUsername = "admin"
+sshUsername = "admin2"
 sshPassword = "password"
 sshServer = "127.0.0.1"
 

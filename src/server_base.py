@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from sys import platform
 import socket, threading
-
+import sqlite3
 class ServerBase(ABC):
 
     def __init__(self):
@@ -48,6 +48,22 @@ class ServerBase(ABC):
             self._listen_thread.join()
             self._socket.close()
 
+    def checkIPfromDB(self,client):
+        conn = sqlite3.connect("UserCredentials.db")
+        cursor = conn.cursor()
+        print("check ip from db")
+        print("192.168.30.11")
+        cursor.execute('SELECT * FROM whitelist WHERE ip = ?',("192.168.30.11",))
+        # cursor.execute('SELECT * FROM whitelist WHERE ip = ?',(client[0],))
+#         cursor.execute('select * from whitelist where ip = ?',(session.getpeername()[0]))
+        conn.commit()
+        rows = cursor.fetchall()
+        conn.close()
+        if(rows):
+            print(rows)
+        else:
+            print("The IP",client[0],"is not allowed")
+        return rows
     # The listen function will constantly run if the server is running.
     # We wait for a connection, if a connection is made, we will call 
     # our connection function.
@@ -56,10 +72,15 @@ class ServerBase(ABC):
             try:
                 self._socket.listen()
                 client, addr = self._socket.accept()
-                self.connection_function(client)
+                print(addr)
+                result = self.checkIPfromDB(addr)
+                if(result):
+                    self.connection_function(client)
+                self.stop()
             except socket.timeout:
                 pass
 
+     
     @abstractmethod
     def connection_function(self, client):
         pass
